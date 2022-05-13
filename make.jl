@@ -1,6 +1,6 @@
 using Literate
 
-problems = ["diffusion.jl"]
+problems = ["diffusion.jl", "diffusion_complicated.jl"]
 output = "notebooks"
 
 for p ∈ problems

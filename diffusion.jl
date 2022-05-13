@@ -98,9 +98,9 @@ end
 # Consider now the diffusion equation
 #
 # $$\frac{\partial u}{\partial t} = \kappa \frac{\partial^2 u}{\partial x^2}, \quad x \in
-# \Omega = [a, b]$$
+# \Omega = [0, 1]$$
 #
-# with diffusivity $\kappa > 0$, homogeneous Dirichlet boundary conditions $u(a, t) = u(b,
+# with diffusivity $\kappa > 0$, homogeneous Dirichlet boundary conditions $u(0, t) = u(1,
 # t) = 0$, and initial conditions $u(x, 0) = u_0(x)$.
 
 κ = 0.005
@@ -172,7 +172,7 @@ plotmat(A_ref)
 # \mathbf{D}$).
 
 X(k, x) = √(2 / L) * sin(π * k * (x - a) / L)
-p = plot()
+p = plot(; xlabel = "x")
 for k = 1:5
     plot!(p, xfine, X.(k, xfine); label = "k = $k")
 end
@@ -216,7 +216,7 @@ p
 # snapshot tensor of size $N \times n_\text{sample} \times n_t$.
 
 tsnap = LinRange(0.0, 1.0, 51)[2:end]
-nsample = 1000
+nsample = 200
 K = 50
 k = 1:K
 c = [randn(K) ./ k for _ = 1:nsample]
@@ -246,7 +246,7 @@ A = zeros(N + 1, N + 1)
 
 function ploterr(A, u, tplot = LinRange(0.0, 1.0, 5))
     sol = S(A, u.(x, 0.0), tplot)
-    p = plot()
+    p = plot(; xlabel = "x")
     for (i, t) ∈ enumerate(tplot)
         plot!(p, xfine, u.(xfine, t); color = i, label = nothing)
         scatter!(p, x, sol[i]; label = "t = $t", color = i, markeralpha = 0.5)
@@ -329,7 +329,8 @@ plotmat(∂L∂A)
 ∂L∂Afit = first(Zygote.gradient(loss, Afit))
 plotmat(∂L∂Afit)
 
-# The gradient of the fitted operator is indeed much closer to zero:
+# The gradient of the fitted operator is indeed much closer to zero (indicating
+# a possible minimum):
 
 norm(∂L∂A)
 
@@ -479,7 +480,7 @@ decomp = svd(U)
 
 # We may plot some POD modes.
 
-p = plot();
+p = plot(; xlabel = "x");
 i = 0
 for k ∈ [1, 3, 7]
     i += 1
@@ -526,7 +527,7 @@ tplot = LinRange(0.0, 1.0, 5)
 sample = 3
 sol = S(A_ref, u[sample].(x, 0.0), tplot)
 sol_pod = S_POD(Φ' * A_ref * Φ, u[sample].(x, 0.0), tplot)
-p = plot();
+p = plot(; xlabel = "x");
 for (i, t) ∈ enumerate(tplot)
     ## scatter!(p, x, u.(x, t); label = nothing, markeralpha = 0.5, color = i) # Exact
     plot!(p, x, sol[i]; label = "t = $t", color = i) # FOM
@@ -534,7 +535,6 @@ for (i, t) ∈ enumerate(tplot)
 end
 p
 
-# For ten modes, we cannot visually see the difference (at least not on our training data).
 # Try using fewer modes and see what happens!
 
 # ## Learning the operator in the POD basis

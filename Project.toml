@@ -1,5 +1,6 @@
 [deps]
 DiffEqFlux = "aae7a2af-3d4f-5e19-a356-7da93b79d9d0"
+IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 OrdinaryDiffEq = "1dea7af3-3e70-54e6-95c3-0bf5283fa5ed"
